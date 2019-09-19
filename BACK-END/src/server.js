@@ -7,18 +7,18 @@ import passport from 'passport'
 import initRouter from './Routes/web'
 require("dotenv").config()
 let app = express()
+const server = http.createServer(app)
 connectDB()
 session.configsession(app)
-const server = http.createServer(app)
-
 app.use(express.static("./src/public"))
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({extended: true}))
 
 
-initRouter(app)
 app.use(passport.initialize())
 app.use(passport.session())
+initRouter(app)
+
 let port = process.env.APP_PORT
 server.listen(port,(req,res)=> {
     console.log("i'm listening on port : " + port)

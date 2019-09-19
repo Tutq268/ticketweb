@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 let Schema = mongoose.Schema
 
 let orderSchema = new Schema({
-    codeorder : String,
+    codeorder : {type: String, required: true, unique: true},
     status : {type: String, default : "Đã Tạo Đơn"},
     productId: {type: Schema.Types.ObjectId, ref: "product"},
     userId: {type: Schema.Types.ObjectId, ref: "user"},

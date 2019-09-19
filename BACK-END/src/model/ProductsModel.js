@@ -3,8 +3,8 @@ import mongoose from 'mongoose'
 let Schema = mongoose.Schema
 
 let productSchema = new Schema({
-   productCode: String,
-   productType: String,
+   productCode: {type: String, required: true, unique: true},
+   productType: {type: String, required: true, unique: true},
    productPrice : {type:Number,default: 0},
    productCount :{type: Number, default: 0},
    productCountAvailable: {type: Number, default: 0},
