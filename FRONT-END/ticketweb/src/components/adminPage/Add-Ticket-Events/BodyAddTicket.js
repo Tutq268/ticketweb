@@ -40,54 +40,54 @@ function BodyAddTicket() {
         }
 
    // đẩy thông tin lên server
-   const getInfoTicket = (e) =>{
-    e.preventDefault()
+            const getInfoTicket = (e) =>{
+              e.preventDefault()
 
-   let imageFile = file.files[0]
-   let productCode = code.value
-   let productType = type.value
-   let productPrice = price.value
-   let productCount = count.value
-   let regexNumber = new RegExp(/^[0-9]*$/)
-   let regexType = new RegExp(/^[s0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$/)
-   if(productCode === "" || productType === "" || productPrice === "" || productCount === "" || imageReader === defaultSrcImage){
-     alert("Vui Lòng Điền Hết Thông Tin")
-     return
-   }
-   if(!regexNumber.test(productPrice)){
-     alert("Giá Của Vé Phải Là Số")
-     price.value = ""
-     return
-   }
-   if(!regexNumber.test(productCount)){
-    alert("Số Lượng Vé Phải Là Số")
-    count.value =""
-    return
-  }
-  if(!regexType.test(productType)){
-    alert("Kiểu Vé không được chứa kí tự đặc biệt")
-    type.value = ""
-    return
-  }
-  let addTicket = {
-    productCode : productCode,
-    productType : productType,
-    productPrice : productPrice,
-    productCount : productCount,
-  }
+            let imageFile = file.files[0]
+            let productCode = code.value
+            let productType = type.value
+            let productPrice = price.value
+            let productCount = count.value
+            let regexNumber = new RegExp(/^[0-9]*$/)
+            let regexType = new RegExp(/^[s0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$/)
+            if(productCode === "" || productType === "" || productPrice === "" || productCount === "" || imageReader === defaultSrcImage){
+              alert("Vui Lòng Điền Hết Thông Tin")
+              return
+            }
+            if(!regexNumber.test(productPrice)){
+              alert("Giá Của Vé Phải Là Số")
+              price.value = ""
+              return
+            }
+            if(!regexNumber.test(productCount)){
+              alert("Số Lượng Vé Phải Là Số")
+              count.value =""
+              return
+            }
+            if(!regexType.test(productType)){
+              alert("Kiểu Vé không được chứa kí tự đặc biệt")
+              type.value = ""
+              return
+            }
+            let addTicket = {
+              productCode : productCode,
+              productType : productType,
+              productPrice : productPrice,
+              productCount : productCount,
+            }
 
-  var formData = new FormData()
-  formData.append("imageTicket",imageFile)
-  axios.post("/admin/add-new-ticket"
-         ,formData,
-          {
-            headers: { "Content-Type": undefined },
-          }).then(resp => {
-            console.log(resp)
-          }).catch(error =>{
-            console.log(error)
-          })
-  }
+            var formData = new FormData()
+            formData.append("imageTicket",imageFile)
+            axios.post("/admin/add-new-ticket"
+                  ,{abc: "123"},
+                    {
+                      headers: { "Content-Type": undefined },
+                    }).then(resp => {
+                      console.log(resp)
+                    }).catch(error =>{
+                      console.log(error)
+                    })
+            }
 
 
       return (

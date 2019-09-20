@@ -3,7 +3,7 @@ import {admin} from './../Controller/index'
 let router = express.Router()
 
 let adminRouter = (app) => {
-    
-    return app.use("/",router)
+    router.post("/add-new-ticket", admin.addNewTicket)
+    return app.use("/admin",router)
 }
 module.exports = adminRouter
