@@ -10,5 +10,9 @@ let adminSchema = new Schema({
   updateAt: {type: String, default: null},
   deleteAt: {type: Number, default: null}
 })
-
+adminSchema.statics = {
+  createAdmin(item) {
+    return this.create(item)
+  }
+}
 module.exports = mongoose.model("admin",adminSchema)
