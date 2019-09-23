@@ -3,6 +3,8 @@ import uuid from 'uuid/v4'
 import AdminModel from './../model/AdminModel'
 import bcrypt from 'bcrypt'
 let saltRound = 7
+import {validationResult} from 'express-validator'
+import {ticket} from './../Services/index'
 
 
 let storageImageTicket = multer.diskStorage({
@@ -26,6 +28,7 @@ let imageTicketUpload = multer({
 
 let addNewTicket = (req,res)=>{
    imageTicketUpload(req,res, async (error) =>{
+   
        if(error){
            console.log(error)
            if(error.message){
@@ -35,11 +38,25 @@ let addNewTicket = (req,res)=>{
            return res.status(500).send("da xay ra loi " +error)
        }
        try {
-        console.log(req.body)
-        console.log(req.file)
-           return res.send("123")
+
+       let ticketInfo = {
+        productCode: req.body.productCode,
+        productType: req.body.productType,
+        productPrice: +req.body.productPrice,
+        productCount: +req.body.productCount,
+        productCountAvailable: +req.body.productCount,
+        productImagePath: req.file.path
+       }
+       let resultAddTicket = await ticket.createNewTicket(ticketInfo)
+      return res.send({
+          result: "ok",
+          message: resultAddTicket
+      })
        } catch (error) {
-           return res.status(500).send("loi : "+ error)
+        return res.send({
+            result: "failed",
+            message: error
+        })
        }
          
    })
