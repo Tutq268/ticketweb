@@ -17,6 +17,7 @@ function BodyAddTicket() {
         e.preventDefault();
         let reader = new FileReader();
         let file = e.target.files[0];
+        console.log(file)
         if (file === undefined){
           return
         }
@@ -44,6 +45,7 @@ function BodyAddTicket() {
               e.preventDefault()
 
             let imageFile = file.files[0]
+            console.log(imageFile)
             let productCode = code.value
             let productType = type.value
             let productPrice = price.value
@@ -69,23 +71,22 @@ function BodyAddTicket() {
               type.value = ""
               return
             }
-            let addTicket = {
-              productCode : productCode,
-              productType : productType,
-              productPrice : productPrice,
-              productCount : productCount,
-            }
+            
 
             var formData = new FormData()
-            formData.append("imageTicket",imageFile)
+            formData.append("ticket",imageFile)
+            formData.append("productCode",productCode)
+            formData.append("productType",productType)
+            formData.append("productPrice",productPrice)
+            formData.append("productCount",productCount)
             axios.post("/admin/add-new-ticket"
-                  ,{abc: "123"},
+                  ,formData,
                     {
                       headers: { "Content-Type": undefined },
                     }).then(resp => {
                       console.log(resp)
                     }).catch(error =>{
-                      console.log(error)
+                      console.log("loi: " + error)
                     })
             }
 
