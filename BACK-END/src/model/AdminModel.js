@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-
+import bcrypt from 'bcrypt'
 let Schema = mongoose.Schema
 
 let adminSchema = new Schema({
@@ -13,6 +13,17 @@ let adminSchema = new Schema({
 adminSchema.statics = {
   createAdmin(item) {
     return this.create(item)
+  },
+  findByUsername(username){
+    return this.findOne({"username": username}).exec()
+  },
+  findAdminById(id){
+    return this.findById(id).exec()
+  }
+}
+adminSchema.methods = {
+  comparePassword(password){
+    return bcrypt.compare(password,this.password)
   }
 }
 module.exports = mongoose.model("admin",adminSchema)

@@ -7,7 +7,7 @@ export default class MainPage extends Component {
         return (
             <div>
                 <Header />
-                <div class="titleHead">
+                <div className="titleHead">
                     <h1>Everything you need to sell tickets to your event online</h1>
                 </div>
                 <div className="container booktickets">

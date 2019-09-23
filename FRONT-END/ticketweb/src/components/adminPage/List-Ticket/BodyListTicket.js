@@ -29,11 +29,9 @@ class BodyListTicket extends Component {
                   <td>800</td>
                   <td>
                     <div className="btn-group">
-                      <navlink to="/editProduct">
                         <button type="button" className="btn btn-info">
                           <i className="fa fa-edit">Edit</i>
                         </button>
-                      </navlink>
                       <button type="button" className="btn btn-warning">
                         <i className="fa fa-delete">Delete</i>
                       </button>    
