@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios'
+import {SwalAlert} from './../../Alert/SwalAlert'
 function BodyAddTicket() {
   let code = React.createRef();
   let type = React.createRef();
@@ -13,6 +14,13 @@ function BodyAddTicket() {
 
 
   // add ảnh vào thẻ img
+  const setDefaultValie = () =>{
+    code.value = ""
+    type.value = ""
+    price.value = ""
+    count.value = ""
+    setImageReader(defaultSrcImage)
+  }
       const handleGetImage = (e) => {
         e.preventDefault();
         let reader = new FileReader();
@@ -71,7 +79,6 @@ function BodyAddTicket() {
               type.value = ""
               return
             }
-            
 
             var formData = new FormData()
             formData.append("ticket",imageFile)
@@ -84,7 +91,16 @@ function BodyAddTicket() {
                     {
                       headers: { "Content-Type": undefined },
                     }).then(resp => {
-                      console.log(resp)
+                      if(resp.data.result === "failed"){
+                        SwalAlert('error',resp.data.message)
+                        setDefaultValie()
+                      }
+                      if(resp.data.result === "ok"){
+                        SwalAlert("success",resp.data.message)
+                        setDefaultValie()
+                      }
+                     
+                      
                     }).catch(error =>{
                       console.log("loi: " + error)
                     })

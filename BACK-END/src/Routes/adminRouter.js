@@ -2,10 +2,11 @@ import express from 'express'
 import {admin} from './../Controller/index'
 import passport from 'passport'
 import initPassportLocal from './../Controller/passportLocal'
+import {ticketValid} from './../Validation/index'
 let router = express.Router()
 initPassportLocal()
 let adminRouter = (app) => {
-    router.post("/add-new-ticket", admin.addNewTicket)
+    router.post("/add-new-ticket",admin.checkLogin, admin.addNewTicket)
  
     router.post('/login',admin.checkLogout, (req, res, next) =>{
         passport.authenticate('local', function(err, user, info) {

@@ -42,8 +42,10 @@ const Login =  () => {
       console.log(result.data)
       if(!result.data){
         setLogin(false)
+        return
       }else{
         setLogin(true)
+        return
       }
     }
     fetchData()

@@ -34,7 +34,6 @@ const AddTicket = () => {
            
             </>
         );
-
 }
 
 export default AddTicket;
