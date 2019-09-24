@@ -10,11 +10,10 @@ function BodyAddTicket() {
 
    let defaultSrcImage = "./../images/logo.jpg"
   const [imageReader,setImageReader] = useState(defaultSrcImage)
-  // const [ticketInfo,setTicketInfo] = useState({})
-
+  
 
   // add ảnh vào thẻ img
-  const setDefaultValie = () =>{
+  const setDefaultValie =  () =>{
     code.value = ""
     type.value = ""
     price.value = ""
@@ -25,7 +24,6 @@ function BodyAddTicket() {
         e.preventDefault();
         let reader = new FileReader();
         let file = e.target.files[0];
-        console.log(file)
         if (file === undefined){
           return
         }
@@ -51,7 +49,6 @@ function BodyAddTicket() {
    // đẩy thông tin lên server
             const getInfoTicket = (e) =>{
               e.preventDefault()
-
             let imageFile = file.files[0]
             console.log(imageFile)
             let productCode = code.value
@@ -90,25 +87,25 @@ function BodyAddTicket() {
                   ,formData,
                     {
                       headers: { "Content-Type": undefined },
-                    }).then(resp => {
+                    }).then((resp) => {
                       if(resp.data.result === "failed"){
                         SwalAlert('error',resp.data.message)
                         setDefaultValie()
+                        
                       }
                       if(resp.data.result === "ok"){
                         SwalAlert("success",resp.data.message)
                         setDefaultValie()
+                      
                       }
-                     
                       
                     }).catch(error =>{
                       console.log("loi: " + error)
-                    })
+                    })      
             }
 
-
-      return (
-            <div className="col-md-10 payLoad add">
+const showData = () => (
+  <div className="col-md-10 payLoad add">
   <div className="headTitle">
     <p>Thêm Vé</p>
   </div>
@@ -149,7 +146,12 @@ function BodyAddTicket() {
   </div>
 </div>
 
-
+)
+      return (
+           
+         <>
+         {showData()}
+         </>
         );
 
 }
