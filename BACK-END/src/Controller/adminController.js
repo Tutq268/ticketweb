@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt'
 let saltRound = 7
 import {validationResult} from 'express-validator'
 import {ticket} from './../Services/index'
+import { admin } from '.';
 
 
 let storageImageTicket = multer.diskStorage({
@@ -38,14 +39,13 @@ let addNewTicket = (req,res)=>{
            return res.status(500).send("da xay ra loi " +error)
        }
        try {
-
        let ticketInfo = {
         productCode: req.body.productCode,
         productType: req.body.productType,
         productPrice: +req.body.productPrice,
         productCount: +req.body.productCount,
         productCountAvailable: +req.body.productCount,
-        productImagePath: req.file.path
+        productImagePath: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
        }
        let resultAddTicket = await ticket.createNewTicket(ticketInfo)
       return res.send({
@@ -83,8 +83,20 @@ let checkLogin = (req,res,next) => {
       res.send("Day la trang add ticket")
   }
 
-  let getListTicket = (req,res) =>{
-      res.send("day la trang danh sach ve")
+  let getListTicket =async (req,res) =>{
+      try {
+          let getAllTicket = await ticket.getAllTicket()
+          res.send({
+              result: "ok",
+              message: "Get All Ticket Success",
+              data: getAllTicket
+          })
+      } catch (error) {
+          res.send({
+              result: "failed",
+              message: error
+          })
+      }
   }
   let getListOrder = (req,res) =>{
       res.send("day la trang lay danh sach order")
@@ -97,6 +109,24 @@ let checkLogin = (req,res,next) => {
       message: "Đăng Xuất Thành Công"
     })
   }
+
+
+  let updateTicketInfo = async(req,res) =>{
+    try {
+        let updateTicketInfo = await ticket.updateTicketInfo(req.body.updateValue)
+        res.send({
+            result: "ok",
+            message: updateTicketInfo,
+            data: null
+        })
+    } catch (error) {
+        res.send({
+            result: "failed",
+            message: error,
+            data: null
+        })
+    }
+  }
   
 
 
@@ -108,6 +138,7 @@ module.exports = {
     getAddTicket:getAddTicket,
     getListTicket:getListTicket,
     getListOrder:getListOrder,
-    logoutAdmin: logoutAdmin
+    logoutAdmin: logoutAdmin,
+    updateTicketInfo:updateTicketInfo
 }
 

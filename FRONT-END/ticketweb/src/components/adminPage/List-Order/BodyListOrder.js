@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 class BodyListOrder extends Component {
     render() {
         return (
-            <div className="col-md-10 payLoad">
+            <div className="col-xs-12 col-sm-10 col-md-10 payLoad">
   <div className="headTitle">
-    <p>Thông Tin Vé</p>
+    <p>Danh Sách Order</p>
   </div>
   <table className="table table-striped table-hover">
     <thead>

@@ -8,6 +8,7 @@
     padding: 0px !important;
 }
 
+
 .btnHomePage {
     width: 100%;
     border: none;
@@ -26,6 +27,23 @@
     list-style: none;
     height: 60px;
 }
+
+.menuWindow {
+    background-color: #363434;
+    padding:  0 !important;
+    margin: 0 !important
+}
+.menuWindow ul li{
+    list-style-type: none;
+    margin: 10px 0;
+    font-size: 18px
+}
+.menuWindow ul li button{
+    border: none;
+    background-color:  #363434;
+    color: #fff
+}
+
 .menuDashboard ul li button {
     background-color: #363434;
     text-align: left;
@@ -65,6 +83,12 @@
 }
 form {
     width: 100%;
+}
+.editButton {
+    /* display: flex; */
+}
+.editbutton1{
+    padding-left: 40% !important
 }
 .addForm button{
     text-align: center;

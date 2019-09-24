@@ -3,22 +3,35 @@ import MenuDashboard from './../MenuDashboard/MenuDasboard'
 import {Redirect} from 'react-router'
 import axios from 'axios'
 import BodyListTicket from './BodyListTicket'
+import {showLoading,SwalAlert} from './../../Alert/SwalAlert'
+import {useDispatch} from 'react-redux'
 const ListTicket = () => {
+      const [loading,setLoading] = useState(true)
        const [Login,setLogin] = useState(true)
+       const dispach = useDispatch()
        useEffect(()=>{
          const fetchData = async () => {
             const result = await axios.get("/admin/list-ticket")
-            console.log(result)
+            setLoading(false)
             if(!result.data){
                 setLogin(false)
             }else{
+              if(result.data.result === "false"){
+                SwalAlert("error",result.data.message)
+                return
+              }
+              else{
+                 dispach({
+                   type: "GET_ALL_TICKET",
+                   playload: result.data.data
+                 })
+              }
               setLogin(true)
-               console.log(result.data)
+
             }
          }
          fetchData()
-       },[])
-
+       },[dispach])
 
        const textAddTicket = () => (
         <div className="container-fluid ">
@@ -30,7 +43,7 @@ const ListTicket = () => {
       )
         return (
             <>
-            {Login ? textAddTicket() : <Redirect to="/admin" />}
+            {loading ? showLoading(true) : (Login ? textAddTicket() : <Redirect to="/admin" />)}
   
            </>
         )

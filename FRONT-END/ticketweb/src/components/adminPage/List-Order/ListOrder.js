@@ -3,14 +3,18 @@ import MenuDasboard from './../MenuDashboard/MenuDasboard'
 import BodyListOrder from './BodyListOrder'
 import { Redirect } from 'react-router';
 import axios from 'axios'
-const ListOrder = () => {
+import {showLoading} from './../../Alert/SwalAlert'
 
+const ListOrder = () => {
+     const [loading,setLoading] = useState(true)
     const [Login,setLogin] = useState(true)
     useEffect(()=>{
         const fetchData = async () => {
         let result = await axios.get("/admin/list-order")
+        setLoading(false)
         if(!result.data){
             setLogin(false)
+            
         }
         else{
           console.log(result.data)
@@ -30,8 +34,7 @@ const ListOrder = () => {
       )
         return (
             <>
-            {Login ? textAddTicket() : <Redirect to="/admin" />}
-                
+            {loading ? showLoading(true) :  (Login ? textAddTicket() : <Redirect to="/admin" />)}    
             </>
         );
 }

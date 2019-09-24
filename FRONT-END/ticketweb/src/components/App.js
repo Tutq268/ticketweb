@@ -8,10 +8,9 @@ import AddTicket from './adminPage/Add-Ticket-Events/AddTicket'
 import ListTicket from './adminPage/List-Ticket/ListTicket'
 import ListOrder from './adminPage/List-Order/ListOrder'
  import { Switch,Route } from 'react-router-dom'
-
 function App() {
+
   return (
-  
     <div className="App">
       <Switch>
          <Route exact path="/" component= {MainPage} />
