@@ -1,9 +1,5 @@
 import multer from 'multer'
 import uuid from 'uuid/v4'
-import AdminModel from './../model/AdminModel'
-import bcrypt from 'bcrypt'
-let saltRound = 7
-import {validationResult} from 'express-validator'
 import {ticket} from './../Services/index'
 
 
@@ -102,8 +98,21 @@ let checkLogin = (req,res,next) => {
           })
       }
   }
-  let getListOrder = (req,res) =>{
-      res.send("day la trang lay danh sach order")
+  let getListOrder =async (req,res) =>{
+      try {
+          let getListOrder = await ticket.getListOrder()
+          res.send({
+              result: "ok",
+              message: "Success",
+              data: getListOrder
+          })
+      } catch (error) {
+          res.send({
+              result: "failed",
+              message: error,
+              data: null
+          })
+      }
   }
 
   let logoutAdmin = (req,res) => {
@@ -162,7 +171,42 @@ let checkLogin = (req,res,next) => {
     })
   }
   
+let deleteTicketItem =async (req,res)=>{
+   try {
+    let ticketId = req.params.ticketId
+    let removeTicket = await ticket.removeTicketItem(ticketId)
+   res.send({
+       result: "ok",
+       message : removeTicket,
+       data: null
+   })
+   } catch (error) {
+       res.send({
+           result: "failed",
+           message: error,
+           data: null
+       })
+   }
+}
 
+let getMoreListOrder = async (req,res) =>{
+   let page = +(req.query.page)
+   try {
+       let getMoreListOrder = await ticket.getMoreListOrder(page-1)
+       res.send({
+           result: "ok",
+           message: `Lấy Danh Sách trang ${page} thành công`,
+           data: getMoreListOrder 
+       })
+   } catch (error) {
+       res.send({
+           result: "failed",
+           message: error,
+           data: null
+       })
+   }
+  
+}
 
 module.exports = {
     addNewTicket: addNewTicket,
@@ -174,6 +218,8 @@ module.exports = {
     getListOrder:getListOrder,
     logoutAdmin: logoutAdmin,
     updateTicketInfo:updateTicketInfo,
-    updateImageTicket:updateImageTicket
+    updateImageTicket:updateImageTicket,
+    deleteTicketItem:deleteTicketItem,
+    getMoreListOrder:getMoreListOrder
 }
 
