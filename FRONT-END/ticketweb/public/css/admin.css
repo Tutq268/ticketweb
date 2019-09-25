@@ -96,3 +96,11 @@ form {
     margin:0 auto;
     display:block;
 }
+.tableListOrder {
+    max-height: 600px;
+    border-bottom: solid 1px black
+}
+.pageTable{
+    margin-top: 20px;
+   float: right;
+}

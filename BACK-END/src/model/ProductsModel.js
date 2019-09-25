@@ -33,6 +33,9 @@ productSchema.statics = {
    },
    updateTicket(id,item){
       return this.findByIdAndUpdate(id,item).exec()
+   },
+   removeTicketById(uid){
+      return this.findByIdAndRemove(uid).exec()
    }
 }
 module.exports = mongoose.model("product",productSchema)

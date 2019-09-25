@@ -1,4 +1,5 @@
 import ProductModel from './../model/ProductsModel'
+import OrderModel from './../model/OrderModel'
 import fsExtra from 'fs-extra'
 
 let createNewTicket =  async (item) => {
@@ -47,6 +48,7 @@ let updateTicketInfo = (infoUpdate) =>{
                return reject("Loại Đã Tồn Tại. Vui Lòng Sửa Lại")
             }
         }
+        infoUpdate.updateAt = Date.now()
         let updateTicket = await ProductModel.updateTicket(infoUpdate._id,infoUpdate)
         if(updateTicket.nModified === 0){
             return reject("Chỉnh Sửa Thất Bại")
@@ -65,7 +67,8 @@ let updateImageTicket = (ticketId,newImagePath) => {
       let oldImagePath = findTicket.productImagePath
       let pathImage = oldImagePath.split("/images/")
       let newImage = {
-        productImagePath: newImagePath
+        productImagePath: newImagePath,
+        updateAt: Date.now()
       }
       let updateImage = await ProductModel.updateTicket(ticketId,newImage)
       if(updateImage.nModified === 0){
@@ -77,9 +80,58 @@ let updateImageTicket = (ticketId,newImagePath) => {
       resolve("Chỉnh Sửa Ảnh Thành Công")
     })
 }
+
+let removeTicketItem = (ticketId) => {
+    return new Promise(async (resolve,reject) => {
+     let findTicket = await ProductModel.findTicketById(ticketId)
+     let imagePath = findTicket.productImagePath.split("/images/")[1]
+     fsExtra.remove(`src/public/images/${imagePath}`)
+     
+     if(!findTicket){
+         return reject("Không tìm thấy ticket để xoá")
+     }
+     let removeTicket = await ProductModel.removeTicketById(ticketId)
+     if(removeTicket.n === 0){
+         return reject("Xoá Vé Thất Bại")
+     }
+     resolve("Xoá Vé Thành Công")
+    })
+}
+
+let getListOrder = () => {
+    return new Promise( async (resolve,reject) => {
+       let getListOrder = await OrderModel.getListOder()
+       if(!getListOrder){
+           return reject("Khong Tim Thay Order Nao")
+       }
+       let getCountOrder = await OrderModel.getCountOrder()
+       if(!getCountOrder){
+           return reject("Lỗi Không Lấy Được Số Lượng Danh Sách")
+       }
+       let dataResult = {
+           ListOrder : getListOrder,
+           count : getCountOrder
+       }
+       resolve(dataResult)
+    })
+}
+const skipListOrder = 10
+let getMoreListOrder = (page) => {
+  return new Promise(async (resolve,reject) => {
+      let findMoreListOrder = await OrderModel.findMoreListOrder(page*skipListOrder)
+      if(!findMoreListOrder){
+          return reject("Lấy Danh Sách Thất Bại")
+      }
+      resolve(findMoreListOrder)
+  })
+}
+
 module.exports = {
     createNewTicket: createNewTicket,
     getAllTicket: getAllTicket,
     updateTicketInfo:updateTicketInfo,
-    updateImageTicket:updateImageTicket
+    updateImageTicket:updateImageTicket,
+    removeTicketItem:removeTicketItem,
+    getListOrder:getListOrder,
+    getMoreListOrder: getMoreListOrder
 }

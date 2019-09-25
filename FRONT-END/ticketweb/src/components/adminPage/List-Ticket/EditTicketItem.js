@@ -100,7 +100,7 @@ const EditTicketItem = () =>{
               SwalAlert("error",result.data.message)
              }
            }).catch(err =>{
-            SwalAlert("error",err)
+            SwalAlert("error","Loi: "+ err)
            })
         }
         if(imageReader !== TICKET_EDIT.productImagePath){
@@ -115,9 +115,11 @@ const EditTicketItem = () =>{
             console.log(resutl)
             if(resutl.data.result === "ok"){
               SwalAlert("success",resutl.data.message)
+              return
             }
             if(resutl.data.result === "failed"){
               SwalAlert("error",resutl.data.message)
+              return
             }
           }).catch(error=>{
             SwalAlert("error",error)
