@@ -6,7 +6,8 @@ let createNewTicket =  async (item) => {
 
         let findTicketCode = await ProductModel.findByproductCode(item.productCode)
         if(findTicketCode){
-           await fsExtra.remove(item.productImagePath)
+            let pathImageInServer = item.productImagePath.split("/images/")
+           await fsExtra.remove(`src/public/images/${pathImageInServer}`)
             return reject('Mã Vé Đã Tồn Tại')
         }
         let addNewTicket = await ProductModel.addNewTicket(item)
@@ -54,8 +55,31 @@ let updateTicketInfo = (infoUpdate) =>{
     })
 
 }
+
+let updateImageTicket = (ticketId,newImagePath) => {
+    return new Promise( async (resolve,reject) =>{
+      let findTicket = await ProductModel.findTicketById(ticketId)
+      if(!findTicket){
+          return reject("Không tìm thấy vé để update")
+      }
+      let oldImagePath = findTicket.productImagePath
+      let pathImage = oldImagePath.split("/images/")
+      let newImage = {
+        productImagePath: newImagePath
+      }
+      let updateImage = await ProductModel.updateTicket(ticketId,newImage)
+      if(updateImage.nModified === 0){
+          return reject("Chỉnh Sửa Ảnh Thất Bại")
+      }
+      let pathImageInServer = `src/public/images/${pathImage[1]}`
+      await fsExtra.remove(pathImageInServer)
+
+      resolve("Chỉnh Sửa Ảnh Thành Công")
+    })
+}
 module.exports = {
     createNewTicket: createNewTicket,
     getAllTicket: getAllTicket,
-    updateTicketInfo:updateTicketInfo
+    updateTicketInfo:updateTicketInfo,
+    updateImageTicket:updateImageTicket
 }

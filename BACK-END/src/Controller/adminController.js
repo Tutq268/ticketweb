@@ -5,7 +5,6 @@ import bcrypt from 'bcrypt'
 let saltRound = 7
 import {validationResult} from 'express-validator'
 import {ticket} from './../Services/index'
-import { admin } from '.';
 
 
 let storageImageTicket = multer.diskStorage({
@@ -27,6 +26,11 @@ let imageTicketUpload = multer({
     limits: {fileSize: 1048576 * 2}
 }).single("ticket")
 
+
+let imageTicketUpdate = multer({
+    storage: storageImageTicket,
+    limits: {fileSize: 1048576 * 2}
+}).single("ticketUpdate")
 let addNewTicket = (req,res)=>{
    imageTicketUpload(req,res, async (error) =>{
    
@@ -127,6 +131,36 @@ let checkLogin = (req,res,next) => {
         })
     }
   }
+
+
+  let updateImageTicket = (req,res) => {
+    imageTicketUpdate(req,res, async (error) =>{
+     if(error){
+        if(error.message){
+            console.log(error.message)
+            return res.status(500).send("Dung Luong Vuot Qua Gioi Han Cho Phep")
+        }
+        return res.status(500).send("da xay ra loi " +error)
+     }
+     try {
+        let newImagePath = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+       let ticketId = req.body.ticketId
+
+        let updateImageTicket = await ticket.updateImageTicket(ticketId,newImagePath)
+        res.send({
+            result: "ok",
+            message: updateImageTicket,
+            data: null
+        })
+     } catch (error) {
+         res.send({
+             result: "failed",
+             message: error,
+             data: null
+         })
+     }
+    })
+  }
   
 
 
@@ -139,6 +173,7 @@ module.exports = {
     getListTicket:getListTicket,
     getListOrder:getListOrder,
     logoutAdmin: logoutAdmin,
-    updateTicketInfo:updateTicketInfo
+    updateTicketInfo:updateTicketInfo,
+    updateImageTicket:updateImageTicket
 }
 

@@ -12,6 +12,7 @@ const EditTicketItem = () =>{
      const [productType,setProductType] = useState(TICKET_EDIT.productType)
      const [productCount,setproductCount] = useState(TICKET_EDIT.productCount)
      const [productPrice,setproductPrice] = useState(TICKET_EDIT.productPrice)
+     const [imageFile,setImageFile] = useState()
      const editFalse = () => {
       dispatch({
         type: "EDIT_TICKET_ITEM",
@@ -21,8 +22,9 @@ const EditTicketItem = () =>{
      const cancleEditTicketItem = (e) =>{
        e.preventDefault()
        editFalse()
+       window.location.reload();
      }
-    
+     
      const changImageEditTicket = (e) =>{
        e.preventDefault()
        let reader = new FileReader();
@@ -45,11 +47,10 @@ const EditTicketItem = () =>{
       
          reader.onloadend = () => {
            setImageReader(reader.result);
+           setImageFile(file)
          }
          reader.readAsDataURL(file)   
      }
-
-
 
      const submitEditTicket = (e) => {
          e.preventDefault()
@@ -94,14 +95,33 @@ const EditTicketItem = () =>{
            axios.put("/admin/edit-ticket-item",{updateValue}).then(result => {
              if(result.data.result === "ok"){
               SwalAlert("success",result.data.message)
-              editFalse()
              }
              if(result.data.result === "failed"){
               SwalAlert("error",result.data.message)
              }
            }).catch(err =>{
-             console.log(err)
+            SwalAlert("error",err)
            })
+        }
+        if(imageReader !== TICKET_EDIT.productImagePath){
+          var formData = new FormData()
+          formData.append("ticketUpdate",imageFile)
+          formData.append("ticketId",TICKET_EDIT._id)
+
+          axios.post("/admin/edit-image-ticket",formData,
+          {
+            headers: { "Content-Type": undefined },
+          }).then(resutl =>{
+            console.log(resutl)
+            if(resutl.data.result === "ok"){
+              SwalAlert("success",resutl.data.message)
+            }
+            if(resutl.data.result === "failed"){
+              SwalAlert("error",resutl.data.message)
+            }
+          }).catch(error=>{
+            SwalAlert("error",error)
+          })
         }
 
      }
