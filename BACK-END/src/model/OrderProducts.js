@@ -3,8 +3,7 @@ import mongoose from 'mongoose'
 let Schema = mongoose.Schema
 
 let orderProductSchema = new Schema({
-    orderId : {type: Schema.Types.ObjectId, ref: "order"},
-    productId: {type: Schema.Types.ObjectId, ref: "product"},
+    productCode: String,
     productQuantity: Number,
     productPrice: Number,
     createAt: {type: Number, default: Date.now()},

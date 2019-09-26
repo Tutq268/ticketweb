@@ -1,4 +1,5 @@
 import express from 'express'
+import {client} from './../Controller/index'
 // import AdminModel from './../model/AdminModel'
 // import bcrypt from 'bcrypt'
 // let saltRounds = 7
@@ -18,6 +19,9 @@ let clientRouter = (app) => {
     //         res.send("err: "+ error)
     //     }
     // })
+    router.get("/:ticketId/step-select-tickets",client.checkPathSelectTicket)
+    router.get("/:ticketId/step-question-form",client.checkPathSelectTicket)
+    router.post("/create-order",client.createNewOrder)
     return app.use("/",router)
 }
 module.exports = clientRouter
