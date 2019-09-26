@@ -1,5 +1,7 @@
+import {client} from './../Services/index'
 let checkPathSelectTicket = (req,res) => {
     let ticketId = req.params.ticketId
+    
     res.send({
         result : "ok",
         message: null,
@@ -7,13 +9,43 @@ let checkPathSelectTicket = (req,res) => {
     })
 }
 
-let createNewOrder = (req,res) =>{
-    console.log(req.body)
-    console.log(req.body.infoClient)
-
-    res.send("gui len thanh cong")
+let createNewOrder =async (req,res) =>{
+   try {
+       const dataOrder = req.body
+       let createNewOrder = await client.createNewOrder(dataOrder)
+       res.send({
+        result: "ok",
+        message: "Đặt Hàng Thành Công",
+        data: createNewOrder
+    })
+   } catch (error) {
+       res.send({
+           result: "failed",
+           message: error,
+           data: null
+       })
+   }
+    
+}
+let getDataOrder = async (req,res) => {
+  try {
+      let {codeOrder} = req.body
+      let getOrderInfo = await client.getOrderInfo(codeOrder)
+      res.send({
+          result: "ok",
+          message :" Lấy Dữ Liệu Thành Công",
+          data: getOrderInfo
+      })
+  } catch (error) {
+      res.send({
+          result: "failed",
+          message: error,
+          data: null
+      })
+  }
 }
 module.exports = {
     checkPathSelectTicket: checkPathSelectTicket,
-    createNewOrder:createNewOrder
+    createNewOrder:createNewOrder,
+    getDataOrder:getDataOrder
 }
