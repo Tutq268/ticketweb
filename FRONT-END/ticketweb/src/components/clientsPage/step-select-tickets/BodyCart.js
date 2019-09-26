@@ -1,7 +1,25 @@
-import React, { Component } from 'react'
-
-export default class BodyCart extends Component {
-    render() {
+import React,{useState} from 'react'
+import {useDispatch,useSelector} from 'react-redux'
+import {NavLink} from 'react-router-dom'
+const BodyCart = () => {
+  const {ticketCurrent,countTicket} = useSelector(state =>({...state.clientBookReducer}))
+  const [count,setCount] = useState(countTicket)
+  const linkTo = `/${ticketCurrent.productCode}/step-question-form`
+  const dispatch = useDispatch()
+  const increaseCount = (e) => {
+   e.preventDefault()
+   setCount(+count + 1)
+  }
+  const decreaseCount = (e) =>{
+    e.preventDefault()
+    setCount(+count -1)
+  }
+  const nextToQuestionForm = () => {
+    dispatch({
+      type: "COUNT_TICKET",
+      playload: count
+    })
+  }
         return (
             <div className="container-fluid bodyCart">
             <div className="container">
@@ -15,21 +33,21 @@ export default class BodyCart extends Component {
                   <div className=" col-xs-4 col-md-3 "><p>Số Lượng</p></div>
                 </div>
                 <div className="col-md-12 selectTicket">
-                  <div className=" col-xs-4 col-md-6 ">Vé Xem Hạng Vàng</div>
-                  <div className="  col-xs-4 col-md-3 ">2000000</div>
+                  <div className=" col-xs-4 col-md-6 ">{ticketCurrent.productType}</div>
+                  <div className="  col-xs-4 col-md-3 ">{(+ticketCurrent.productPrice).toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div>
                   <div className=" col-xs-4  col-md-3 countTiket">
-                    <button>-</button>
+                    <button onClick = {(e)=> decreaseCount(e)}>-</button>
                     <form>
-                      <input type="text" defaultValue={1} />
+                      <input type="text" value={count} onChange={(e) => setCount(e.target.value)} />
                     </form>
-                    <button>+</button>
+                    <button onClick={(e) => increaseCount(e)}>+</button>
                   </div>
                 </div>
                 <div className="col-md-12 infoTicket ">
-                  <div className="col-md-4">
-                    <img src="./../images/ticketDiamon.png" alt=""/>
+                  <div className="col-md-6">
+                    <img src={ticketCurrent.productImagePath} alt=""/>
                   </div>
-                  <div className="col-md-8">
+                  <div className="col-md-6">
                     <p>Quý khách vui long đến đúng giờ và ngồi đúng vị trí ghi trên vé</p>
                   </div>
                 </div>
@@ -45,17 +63,20 @@ export default class BodyCart extends Component {
                     <p style={{float: 'right'}}>Số Lượng</p>
                   </div>
                   <div className="info">
-                    <p style={{float: 'left'}}>Gold Ticket</p>
-                    <p style={{float: 'right'}}>1</p>
+                    <p style={{float: 'left'}}>{ticketCurrent.productType}</p>
+                    <p style={{float: 'right'}}>{count}</p>
                   </div>
                   <div>
                   </div>
                 </div>
                 <div className="col-md-12 totalCount">
                   <p style={{float: 'left'}}>Tổng Cộng</p>
-                  <p style={{float: 'right'}}>0 VND</p>
+                  <p style={{float: 'right'}}>{(+count*ticketCurrent.productPrice).toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,')} VND</p>
                 </div>
-                <button className="col-md-12 btnContinueBook">Tiếp Tục</button>
+                <NavLink to={linkTo}>
+                  <button className="col-md-12 btnContinueBook" onClick={nextToQuestionForm}>Tiếp Tục</button>
+
+                </NavLink>
               </div>
             </div>
           </div>
@@ -63,4 +84,4 @@ export default class BodyCart extends Component {
           
         )
     }
-}
+export default BodyCart

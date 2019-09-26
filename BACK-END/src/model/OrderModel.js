@@ -2,10 +2,9 @@ import mongoose from 'mongoose'
 let Schema = mongoose.Schema
 
 let orderSchema = new Schema({
-    codeorder : {type: String, required: true, unique: true},
+    codeorder : {type: String, unique: true, default: Date.now()},
     status : {type: String, default : "Đã Tạo Đơn"},
-    productId: {type: Schema.Types.ObjectId, ref: "product"},
-    userId: {type: Schema.Types.ObjectId, ref: "user"},
+    user: {type: Schema.Types.ObjectId, ref: "user"},
     createAt: {type: Number, default: Date.now()},
     updateAt: {type: String, default: null},
     deleteAt: {type: Number, default: null}

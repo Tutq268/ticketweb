@@ -37,7 +37,7 @@ let adminRouter = (app) => {
    router.post("/logout",admin.logoutAdmin)
     router.get("/",admin.checkLogin, admin.getLoginAdmin)
     router.get("/add-ticket",admin.checkLogin,admin.getAddTicket)
-    router.get("/list-ticket",admin.checkLogin,admin.checkLogin, admin.getListTicket)
+    router.get("/list-ticket", admin.getListTicket)
     router.get("/list-order",admin.checkLogin, admin.getListOrder)
     router.put("/edit-ticket-item",admin.checkLogin,admin.updateTicketInfo)
    router.post("/edit-image-ticket",admin.checkLogin,admin.updateImageTicket)
