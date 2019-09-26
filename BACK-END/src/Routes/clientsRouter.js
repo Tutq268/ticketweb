@@ -22,6 +22,8 @@ let clientRouter = (app) => {
     router.get("/:ticketId/step-select-tickets",client.checkPathSelectTicket)
     router.get("/:ticketId/step-question-form",client.checkPathSelectTicket)
     router.post("/create-order",client.createNewOrder)
+    router.get("/:ticketId/step-complete-order",client.checkPathSelectTicket)
+    router.post("/all-data-order",client.getDataOrder)
     return app.use("/",router)
 }
 module.exports = clientRouter
