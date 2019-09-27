@@ -1,6 +1,8 @@
 import React,{useState} from 'react';
-import {useSelector} from 'react-redux'
+import {useSelector,useDispatch} from 'react-redux'
 import axios from 'axios'
+import {SwalAlert} from './../../Alert/SwalAlert'
+import {Redirect} from 'react-router'
 // import {NavLink} from 'react-router-dom'
 const BodyQuestionForm = () => {
   const {ticketCurrent,countTicket} = useSelector(state =>({...state.clientBookReducer}))
@@ -9,6 +11,9 @@ const BodyQuestionForm = () => {
    const [address,setAddress] = useState("")
    const [email,setEmail] = useState("")
    const [phone,setPhone] = useState("")
+   const pathCompleteOrder = `/${ticketCurrent.productCode}/step-complete-order`
+   const [successCreate,setSuccessCreate] = useState(false)
+   const dispatch = useDispatch()
   let totalPriceOrder = ((+ticketCurrent.productPrice)*(+countTicket)).toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,')
   
    const nexToCompleteOrder = async (e) =>{
@@ -40,7 +45,7 @@ const BodyQuestionForm = () => {
         address: address,
         email: email,
         phone: phone,
-        productCode: ticketCurrent.productCode,
+        productType: ticketCurrent.productType,
         productQuantity: countTicket,
         productPrice : +(ticketCurrent.productPrice) * (+countTicket)
       }
@@ -48,64 +53,78 @@ const BodyQuestionForm = () => {
         let createOrderTicket = await axios.post("/create-order",infoClient,{
           headers: { "Content-Type": undefined }
         })
-        console.log(createOrderTicket)
+        if(createOrderTicket.data.result === "ok"){
+         let dataPlayLoad = createOrderTicket.data.data
+         console.log(dataPlayLoad.codeorder)
+          dispatch({type: "ORDER_INFO",playload: dataPlayLoad})
+          let getAllInfoOrder = await axios.post(`/all-data-order`,{codeOrder: dataPlayLoad.codeorder},{headers: { "Content-Type": undefined }})
+          if(getAllInfoOrder.data.result === "ok"){
+            dispatch({type: "ALL_ORDER_INFO",playload: getAllInfoOrder.data.data})
+          }
+          setSuccessCreate(true)
+        }
+        if(createOrderTicket.data.result === "failed"){
+          SwalAlert("error",createOrderTicket.data.message)
+        }
       } catch (error) {
-        console.log(error)
+        SwalAlert("error",error)
       }
     }
    }
-
-        return (
-        <div className="container-fluid bodyCart">
-  <div className="container">
-    <div className="col-md-12 cartTitle">
-      <h3>Your Info</h3>
-    </div>
-    <div className="col-xs-12 col-sm-12 col-md-8 infoBuyer">
-      <div className="col-md-12 userInfo">
-        <p>Họ Và Tên: <span>*</span> </p>
-        <input value={username} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Họ Tên" />
+   const showBodyQuestionForm = () => (
+    <div className="container-fluid bodyCart">
+    <div className="container">
+      <div className="col-md-12 cartTitle">
+        <h3>Your Info</h3>
       </div>
-      <div className="col-md-12 userInfo">
-        <p>Địa Chỉ: <span>*</span> </p>
-        <input  value={address} onChange={(e) => setAddress(e.target.value)} type="text" placeholder="Họ Tên" />
-      </div>
-      <div className="col-md-6 userInfo">
-        <p>Email: <span>*</span></p>
-        <input  value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Email" />
-      </div>
-      <div className="col-md-6 userInfo">
-        <p>Số Điện Thoại: <span>*</span></p>
-        <input  value={phone} onChange={(e) => setPhone(e.target.value)} type="text" placeholder="Phone" />
-      </div>
-    </div>
-    <div className="col-xs-12 col-sm-12 col-md-4 infoBookTicket">
-      <div className="col-md-12 desTicket">
-        <p>THÔNG TIN ĐẶT VÉ</p>
-      </div>
-      <br />
-      <div className="col-md-12 infoTicketBook">
-        <div className="title">
-          <p style={{float: 'left'}}>Loại Vé</p>
-          <p style={{float: 'right'}}>Số Lượng</p>
+      <div className="col-xs-12 col-sm-12 col-md-8 infoBuyer">
+        <div className="col-md-12 userInfo">
+          <p>Họ Và Tên: <span>*</span> </p>
+          <input value={username} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Họ Tên" />
         </div>
-        <div className="info">
-          <p style={{float: 'left'}}>{ticketCurrent.productType}</p>
-          <p style={{float: 'right'}}>{countTicket}</p>
+        <div className="col-md-12 userInfo">
+          <p>Địa Chỉ: <span>*</span> </p>
+          <input  value={address} onChange={(e) => setAddress(e.target.value)} type="text" placeholder="Họ Tên" />
         </div>
-        <div>
+        <div className="col-md-6 userInfo">
+          <p>Email: <span>*</span></p>
+          <input  value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Email" />
+        </div>
+        <div className="col-md-6 userInfo">
+          <p>Số Điện Thoại: <span>*</span></p>
+          <input  value={phone} onChange={(e) => setPhone(e.target.value)} type="text" placeholder="Phone" />
         </div>
       </div>
-      <div className="col-md-12 totalCount">
-        <p style={{float: 'left'}}>Tổng Cộng</p>
-        <p style={{float: 'right'}}>{totalPriceOrder} VND</p>
+      <div className="col-xs-12 col-sm-12 col-md-4 infoBookTicket">
+        <div className="col-md-12 desTicket">
+          <p>THÔNG TIN ĐẶT VÉ</p>
+        </div>
+        <br />
+        <div className="col-md-12 infoTicketBook">
+          <div className="title">
+            <p style={{float: 'left'}}>Loại Vé</p>
+            <p style={{float: 'right'}}>Số Lượng</p>
+          </div>
+          <div className="info">
+            <p style={{float: 'left'}}>{ticketCurrent.productType}</p>
+            <p style={{float: 'right'}}>{countTicket}</p>
+          </div>
+          <div>
+          </div>
+        </div>
+        <div className="col-md-12 totalCount">
+          <p style={{float: 'left'}}>Tổng Cộng</p>
+          <p style={{float: 'right'}}>{totalPriceOrder} VND</p>
+        </div>
+        <button onClick={(e) => nexToCompleteOrder(e)} className="col-md-12 btnContinueBook">Tiếp Tục</button>
       </div>
-      <button onClick={(e) => nexToCompleteOrder(e)} className="col-md-12 btnContinueBook">Tiếp Tục</button>
     </div>
   </div>
-</div>
-
-
+   )
+        return (
+       <>
+        {successCreate ? <Redirect to={pathCompleteOrder} /> : showBodyQuestionForm()}
+       </>
         );
     }
 
