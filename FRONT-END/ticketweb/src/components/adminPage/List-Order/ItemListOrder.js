@@ -1,16 +1,16 @@
 import React from 'react'
 
-const ItemListOrder = () => {
+const ItemListOrder = ({page,index,orderInfo}) => {
     return(
         <tr>
-        <td>1</td>
-        <td>Trần Quang Tú</td>
-        <td>Bắc Từ Liêm  - Hà Nội</td>
-        <td>0988917065</td>
-        <td>d101</td>
-        <td>10.000.000</td>
-        <td>Gold Ticket</td>
-        <td>Đã Nhận</td>
+        <td>{ (page > 0) ? ((10*(page-1) + index) + 1) : (index + 1)}</td>
+        <td>{orderInfo.user.username}</td>
+        <td>{orderInfo.user.address}</td>
+        <td>{orderInfo.user.phone}</td>
+        <td>{orderInfo.codeorder}</td>
+        <td>{orderInfo.user.productPrice}</td>
+        <td>{orderInfo.user.productType}</td>
+        <td>{orderInfo.status}</td>
       </tr>  
     )
 }

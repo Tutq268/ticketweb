@@ -7,6 +7,7 @@ import Login from './adminPage/Login/Login'
 import AddTicket from './adminPage/Add-Ticket-Events/AddTicket'
 import ListTicket from './adminPage/List-Ticket/ListTicket'
 import ListOrder from './adminPage/List-Order/ListOrder'
+import FindOrder from './clientsPage/FindOrder/FindOrder'
  import { Switch,Route } from 'react-router-dom'
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
     <div className="App">
       <Switch>
          <Route exact path="/" component= {MainPage} />
+         <Route exact path="/find-order" component= {FindOrder} />
          <Route exact path="/:idticket/step-select-tickets" component= {SelectTicket} />
          <Route exact path="/:idticket/step-question-form" component= {QuestionTicket} />
          <Route exact path="/:idticket/step-complete-order" component= {CompleteOrder} />

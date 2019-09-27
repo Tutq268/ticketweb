@@ -15,6 +15,7 @@ const ListOrder = () => {
       
         const fetchData = async () => {
           let result = await axios.get("/admin/list-order")
+          
           setLoading(false)
           if(!result.data){
               setLogin(false)

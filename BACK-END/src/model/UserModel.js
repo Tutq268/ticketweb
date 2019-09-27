@@ -18,6 +18,9 @@ let userSchema = new Schema({
 userSchema.statics = {
     createNew(item){
         return this.create(item)
+    },
+    findUserById(uid){
+        return this.findById(uid).exec()
     }
 }
 
