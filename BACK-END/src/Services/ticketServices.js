@@ -6,7 +6,8 @@ let createNewTicket =  async (item) => {
     return new Promise(async (resolve,reject) => {
 
         let findTicketCode = await ProductModel.findByproductCode(item.productCode)
-        if(findTicketCode){
+        let findTicketType = await ProductModel.findByproductType(item.productType)
+        if(findTicketCode || findTicketType){
             let pathImageInServer = item.productImagePath.split("/images/")
            await fsExtra.remove(`src/public/images/${pathImageInServer}`)
             return reject('Mã Vé Đã Tồn Tại')

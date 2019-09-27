@@ -116,7 +116,7 @@ let checkLogin = (req,res,next) => {
   }
 
   let logoutAdmin = (req,res) => {
-    req.logout()
+    req.logout();
     res.send({
       result: true,
       message: "Đăng Xuất Thành Công"

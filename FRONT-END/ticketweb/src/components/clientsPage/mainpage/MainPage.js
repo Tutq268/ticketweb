@@ -12,7 +12,7 @@ const MainPage = () => {
     useEffect(() =>{
        const fetchData =async ()=>{
          try {
-             let result = await axios.get("/admin/list-ticket")
+             let result = await axios.get("/list-ticket")
              if(result.data.result === "ok"){
                  setTicketData(result.data.data)
                  dispatch({
