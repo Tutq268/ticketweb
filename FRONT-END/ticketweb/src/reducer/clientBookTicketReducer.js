@@ -2,7 +2,8 @@ let data = {
     ticketCurrent : {},
     countTicket: 1,
     orderInfo: {},
-    allOrderInfo : {}
+    allOrderInfo : {},
+    statusCheck: false
 }
 
 export default (state = data, action) => {
@@ -17,6 +18,8 @@ export default (state = data, action) => {
             return {...state,orderInfo: action.playload}
         case "ALL_ORDER_INFO" :
             return {...state,allOrderInfo: action.playload}
+        case "STATUS_CHECK" :
+            return {...state,statusCheck:action.playload}
         default:
             return state
     }

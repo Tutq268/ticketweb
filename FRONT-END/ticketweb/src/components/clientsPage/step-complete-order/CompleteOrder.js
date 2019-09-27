@@ -4,14 +4,13 @@ import Footer from './../Footer'
 import StepOrder from './../step-order/StepOrder'
 import BodyComplete from './BodyComplete'
 import {showLoading} from './../../Alert/SwalAlert'
-import {useSelector,useDispatch} from 'react-redux'
+import {useSelector} from 'react-redux'
 import {Redirect} from 'react-router'
 import axios from 'axios'
 const CompleteOrder = () => {
     const [loading,setLoading] = useState(true)
-    const dispatch = useDispatch()
     const [check,setCheck] = useState(true)
-    const {ticketCurrent,orderInfo} = useSelector(state => ({...state.clientBookReducer}))
+    const {ticketCurrent} = useSelector(state => ({...state.clientBookReducer}))
    const currentPath = window.location.href
    console.log(currentPath)
     useEffect(()=> {

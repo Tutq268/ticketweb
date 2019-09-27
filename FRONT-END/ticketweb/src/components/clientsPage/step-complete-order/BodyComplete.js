@@ -2,7 +2,11 @@ import React from 'react';
 import {useSelector} from 'react-redux'
 const BodyComplete = () => {
   const {allOrderInfo} = useSelector(state => ({...state.clientBookReducer}))
-
+  let orderInfo = {}
+  if(Object.getOwnPropertyNames(allOrderInfo).length !== 0){
+     orderInfo = allOrderInfo.user
+  }
+  
         return (
           <div>
           <div className="col-md-12 ">
@@ -20,26 +24,29 @@ const BodyComplete = () => {
                   </tr>
                   <tr>
                     <td className="boldText">Loại Vé</td>
-                    <td className="redText">{allOrderInfo.user.productType}</td>
+                    <td className="redText">{orderInfo.productType}</td>
                   </tr>
                   <tr>
                     <td className="boldText">Số Lượng</td>
-                    <td className="redText">{allOrderInfo.user.productQuantity}</td>
+                    <td className="redText">{orderInfo.productQuantity}</td>
+                  </tr>
+                  <tr>
+                    <td className="boldText">Tổng Tiền</td>
+                    <td className="redText">{orderInfo.productPrice}</td>
                   </tr>
                   <tr>
                     <td className="boldText">Tên Khách Hàng</td>
-                    <td className="redText">{allOrderInfo.user.username}</td>
+                    <td className="redText">{orderInfo.username}</td>
                   </tr>
                   <tr>
                     <td className="boldText">Email:</td>
-                    <td className="redText">{allOrderInfo.user.email}</td>
+                    <td className="redText">{orderInfo.email}</td>
                   </tr>
                   <tr>
                     <td className="boldText">Số Điện Thoại:</td>
-                    <td className="redText">{allOrderInfo.user.phone}</td>
+                    <td className="redText">{orderInfo.phone}</td>
                   </tr>
                 </tbody></table>
-              <button>Huỷ Đơn Hàng</button>
             </div>
           </div>
         </div>

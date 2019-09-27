@@ -44,8 +44,27 @@ let getDataOrder = async (req,res) => {
       })
   }
 }
+
+let removeOrderTicket = async (req,res) => {
+  let orderId = req.params.orderId
+  try {
+      let removeOrder = await client.removeOrderTicket(orderId)
+      res.send({
+          result : "ok",
+          message: removeOrder,
+          data: null
+      })
+  } catch (error) {
+      res.send({
+          result: "failed",
+          message: error,
+          data: null
+      })
+  }
+}
 module.exports = {
     checkPathSelectTicket: checkPathSelectTicket,
     createNewOrder:createNewOrder,
-    getDataOrder:getDataOrder
+    getDataOrder:getDataOrder,
+    removeOrderTicket:removeOrderTicket
 }

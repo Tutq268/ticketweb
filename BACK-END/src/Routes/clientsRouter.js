@@ -24,6 +24,7 @@ let clientRouter = (app) => {
     router.post("/create-order",client.createNewOrder)
     router.get("/:ticketId/step-complete-order",client.checkPathSelectTicket)
     router.post("/all-data-order",client.getDataOrder)
+    router.delete("/remove-order-ticket/:orderId",client.removeOrderTicket)
     return app.use("/",router)
 }
 module.exports = clientRouter

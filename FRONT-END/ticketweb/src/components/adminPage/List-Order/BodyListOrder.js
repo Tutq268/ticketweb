@@ -7,6 +7,7 @@ import axios from 'axios'
 const BodyListOrder = () => {
   const {GetListOrder,GetCountOrder} = useSelector(state => ({...state.orderReducer}))
   const dispatch = useDispatch()
+  const [page,setPage] = useState(0)
 //  const [dataListOrder,setDataListOrder] = useState()
     const [countPage,setCountPage] = useState([])
     const [loading,setLoading] = useState(true)
@@ -23,6 +24,7 @@ const BodyListOrder = () => {
     const getOrderByPage = async (e)=>{
       e.preventDefault()
      let page = e.target.value
+     setPage(page)
     
     try {
      let result = await axios.get(`/admin/get-list-order?page=${page}`)
@@ -64,11 +66,7 @@ const BodyListOrder = () => {
         </thead>
         <tbody>
           {console.log(GetListOrder)}
-            <ItemListOrder />
-            <ItemListOrder />
-            <ItemListOrder />
-            <ItemListOrder />
-            <ItemListOrder />
+          {GetListOrder.map((value,key)=>(<ItemListOrder page={page} key={key} index={key} orderInfo = {value}/>))}
         
         </tbody>
       </table>
